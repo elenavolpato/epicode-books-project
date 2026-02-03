@@ -7,12 +7,13 @@ const Welcome = function () {
 
   return (
     <>
-      <Alert show={show} variant="success" className="position-absolute top-0 m-5 z-1 shadow-lg">
+      <Alert show={show} bg="dark" data-bs-theme="dark" variant="warning" className="position-fixed z-1 shadow-lg welcome-alert">
         <Alert.Heading>Welcome </Alert.Heading>
         <p>This is a list of books available in our shop</p>
+        <p>Click on the yellow buttons on the top to view different categories</p>
         <hr />
         <div className="d-flex justify-content-end">
-          <Button onClick={() => setShow(false)} variant="outline-success">
+          <Button onClick={() => setShow(false)} variant="outline-warning">
             Close me
           </Button>
         </div>

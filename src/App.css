@@ -6,3 +6,7 @@ body {
   height: 420px;
   object-fit: cover;
 }
+
+.welcome-alert {
+  left: 40% !important;
+}

@@ -21,7 +21,12 @@ const AllTheBooks = function () {
     <Container bg="dark" data-bs-theme="dark">
       <Row className="gap-2 my-2">
         {categories.map((cat) => (
-          <Button key={cat.id} className={`${books === cat.data ? "fw-bold fs-5 border " : ""} col`} variant={cat.variant} onClick={() => setBooks(cat.data)}>
+          <Button
+            key={cat.id}
+            className={`${books === cat.data ? " fw-bold fs-5 opacity-100" : ""} col fw-bolder opacity-50`}
+            variant="warning"
+            onClick={() => setBooks(cat.data)}
+          >
             {cat.label}
           </Button>
         ))}
@@ -30,12 +35,12 @@ const AllTheBooks = function () {
         {books.map((book) => {
           return (
             <Col className="text-center mb-4 " xs={6} xl={3} key={book.id}>
-              <Card style={{ width: "18rem", height: "600px" }} className="shadow">
+              <Card style={{ height: "600px" }} className="shadow">
                 <Card.Img variant="top" src={book.img} className="book-img" />
                 <Card.Body className="d-inline-flex flex-column justify-content-end align-items-center">
                   <Card.Title>{book.title.length > 40 ? book.title.slice(0, 40) + "..." : book.title}</Card.Title>
                   <Card.Text className="fs-4 fw-bold">€ {book.price.toFixed(2)}</Card.Text>
-                  <Button variant="info" className="px-5">
+                  <Button variant="warning" className="px-5">
                     Buy
                   </Button>
                 </Card.Body>

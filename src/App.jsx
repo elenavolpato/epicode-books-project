@@ -35,13 +35,15 @@ class App extends Component {
   render() {
     return (
       <>
-        <Container bg="dark" data-bs-theme="dark">
+        <Container bg="dark" data-bs-theme="dark" fluid className="p-0">
           <MyNav />
           <Welcome />
-          <CategoryButtons categories={categories} activeData={this.state.selectedBooks} onCategoryChange={this.handleCategoryChange} className="px-5" />
+          <Container>
+            <CategoryButtons categories={categories} activeData={this.state.selectedBooks} onCategoryChange={this.handleCategoryChange} />
 
-          <BooksList books={this.state.selectedBooks} />
-          <MyFooter />
+            <BooksList books={this.state.selectedBooks} />
+            <MyFooter />
+          </Container>
         </Container>
       </>
     )

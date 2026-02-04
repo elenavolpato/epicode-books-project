@@ -1,5 +1,5 @@
 import { Component } from "react"
-import { Col, Card, Button } from "react-bootstrap"
+import { Col, Card, Button, Tooltip, OverlayTrigger } from "react-bootstrap"
 
 class SingleBook extends Component {
   render() {
@@ -9,10 +9,12 @@ class SingleBook extends Component {
         <Card style={{ height: "650px" }} className="shadow book-item">
           <Card.Img variant="top" src={img} className="book-img" />
           <Card.Body className="d-inline-flex flex-column justify-content-end align-items-center">
-            <Card.Title>{title.length > 40 ? title.slice(0, 40) + "..." : title}</Card.Title>
+            <OverlayTrigger overlay={<Tooltip id={id}>{title}</Tooltip>}>
+              <Card.Title>{title.length > 40 ? title.slice(0, 40) + "..." : title}</Card.Title>
+            </OverlayTrigger>
             <Card.Text className="fs-4 fw-bold">€ {price.toFixed(2)}</Card.Text>
             <Card.Text>{category}</Card.Text>
-            <Button variant="warning" className="px-5">
+            <Button variant="warning" className="px-5 fw-bolder">
               Buy
             </Button>
           </Card.Body>

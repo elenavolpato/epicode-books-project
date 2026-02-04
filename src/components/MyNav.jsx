@@ -7,7 +7,7 @@ const MyNav = function () {
     <Navbar collapseOnSelect expand="lg" bg="dark" data-bs-theme="dark">
       <Container className="text-warning">
         <Navbar.Brand href="#home" className="text-warning">
-          Awesome book list to buy
+          Epibooks
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">

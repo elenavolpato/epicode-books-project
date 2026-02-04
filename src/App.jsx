@@ -42,8 +42,8 @@ class App extends Component {
             <CategoryButtons categories={categories} activeData={this.state.selectedBooks} onCategoryChange={this.handleCategoryChange} />
 
             <BooksList books={this.state.selectedBooks} />
-            <MyFooter />
           </Container>
+          <MyFooter />
         </Container>
       </>
     )

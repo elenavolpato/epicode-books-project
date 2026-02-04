@@ -5,14 +5,21 @@ import SingleBook from "./SingleBook"
 class BookList extends Component {
   state = {
     searchVal: "",
+    selectedBookId: null,
   }
 
   handleSearchChange = (e) => {
     this.setState({ searchVal: e.target.value })
   }
+
+  handleBookSelect = (bookId) => {
+    console.log("Book clicked, ID:", bookId)
+    console.log("Current selectedBookId:", this.state.selectedBookId)
+    this.setState({ selectedBookId: bookId })
+  }
   render() {
     const { books } = this.props
-    const { searchVal } = this.state
+    const { searchVal, selectedBookId } = this.state
 
     const filteredBooks = searchVal === "" ? books : books.filter((book) => book.title.toLowerCase().includes(searchVal.toLowerCase()))
 
@@ -33,7 +40,11 @@ class BookList extends Component {
         </InputGroup>
 
         {/* render books part */}
-        {filteredBooks.length === 0 ? <div> No titles found. Try another search</div> : filteredBooks.map((book) => <SingleBook key={book.id} {...book} />)}
+        {filteredBooks.length === 0 ? (
+          <div> No titles found. Try another search</div>
+        ) : (
+          filteredBooks.map((book) => <SingleBook key={book.asin} {...book} selected={selectedBookId === book.asin} onSelect={this.handleBookSelect} />)
+        )}
       </Row>
     )
   }

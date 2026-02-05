@@ -1,5 +1,7 @@
 import { Component } from "react"
-import { ListGroup } from "react-bootstrap"
+import { Button, ListGroup } from "react-bootstrap"
+
+const commentsUrl = "https://striveschool-api.herokuapp.com/api/comments/"
 
 class CommentArea extends Component {
   state = {
@@ -29,9 +31,7 @@ class CommentArea extends Component {
   }
 
   getComments = () => {
-    const commentsUrl = `https://striveschool-api.herokuapp.com/api/comments/${this.props.elementId}`
-    console.log(commentsUrl)
-    fetch(commentsUrl, {
+    fetch(commentsUrl + this.props.elementId, {
       headers: {
         Authorization:
           "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2OTg0OWQyODgwMjA2ODAwMTUwNGRjNjUiLCJpYXQiOjE3NzAyOTg2NjQsImV4cCI6MTc3MTUwODI2NH0._VJ73MJmEcZbxtQjMlmXRAA1xlBhu1QspZwENOPPpko",
@@ -42,7 +42,6 @@ class CommentArea extends Component {
         else throw new Error("Error in retrieving the comments")
       })
       .then((bookComments) => {
-        console.log("res", bookComments)
         this.setState({ comments: bookComments })
       })
       .catch((err) => console.error(err))
@@ -51,18 +50,55 @@ class CommentArea extends Component {
     this.getComments()
   }
 
+  deleteComment = (commentId) => {
+    fetch(commentsUrl + commentId, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization:
+          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2OTg0OWQyODgwMjA2ODAwMTUwNGRjNjUiLCJpYXQiOjE3NzAyOTg2NjQsImV4cCI6MTc3MTUwODI2NH0._VJ73MJmEcZbxtQjMlmXRAA1xlBhu1QspZwENOPPpko",
+      },
+    })
+      .then((res) => {
+        if (res.ok) {
+          console.log("Comment deleted successfully")
+          this.getComments()
+        } else {
+          throw new Error("Error deleting comment")
+        }
+      })
+      .catch((err) => console.error("Error deleting comment:", err))
+  }
+
   render() {
     return (
       <ListGroup>
-        {this.state.comments.map((comment) => (
-          <ListGroup.Item
-            key={comment._id}
-            className="d-flex justify-content-between"
-          >
-            <div>{this.rateStarsRenderer(comment.rate)}</div>
-            <div>{comment.comment}</div>
-          </ListGroup.Item>
-        ))}
+        {this.state.comments.length === 0 && <div>No comments yet</div>}
+        {this.state.comments.length > 0 &&
+          this.state.comments.map((comment) => (
+            <ListGroup.Item
+              key={comment._id}
+              className="d-flex justify-content-between"
+            >
+              <div>{this.rateStarsRenderer(comment.rate)}</div>
+              <div>{comment.comment}</div>
+              <Button
+                variant="danger"
+                onClick={() => this.deleteComment(comment._id)}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  class="bi bi-trash-fill"
+                  viewBox="0 0 16 16"
+                >
+                  <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0" />
+                </svg>
+              </Button>
+            </ListGroup.Item>
+          ))}
       </ListGroup>
     )
   }

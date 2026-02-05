@@ -6,7 +6,6 @@ import AddCommentModal from "./AddCommentModal"
 class SingleBook extends Component {
   handleClick = () => {
     this.props.onSelect(this.props.asin)
-    console.log(`Book ${this.props.asin} selected?`, this.props.selected)
   }
   // add comments modal logic
   state = {

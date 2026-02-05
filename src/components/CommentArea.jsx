@@ -1,8 +1,9 @@
 import { Component } from "react"
 import { Button, ListGroup } from "react-bootstrap"
 import Loading from "./Loading"
+import Error from "./Error"
 
-const commentsUrl = "https://striveschool-api.herokuapp.com/api/comments/"
+const commentsUrl = "https://striveschool-api.herokuapp.com/api/commenti/"
 
 class CommentArea extends Component {
   state = {
@@ -47,7 +48,10 @@ class CommentArea extends Component {
       .then((bookComments) => {
         this.setState({ comments: bookComments, loading: false })
       })
-      .catch((err) => console.error(err))
+      .catch((err) => {
+        console.error(err)
+        this.setState({ error: true, loading: false })
+      })
   }
   componentDidMount() {
     this.getComments()
@@ -78,11 +82,12 @@ class CommentArea extends Component {
       <div>
         <div className="d-flex justify-content-center align-items-center">
           {this.state.loading && <Loading />}
+          {this.state.error && <Error />}
         </div>
         <ListGroup>
-          {this.state.comments.length === 0 && !this.state.loading && (
-            <div>No comments yet</div>
-          )}
+          {this.state.comments.length === 0 &&
+            !this.state.loading &&
+            !this.state.error && <div>No comments yet</div>}
           {this.state.comments.length > 0 &&
             !this.state.loading &&
             this.state.comments.map((comment) => (

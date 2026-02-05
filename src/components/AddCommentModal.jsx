@@ -20,7 +20,8 @@ class AddCommentModal extends Component {
   }
 
   addComment = (newComment) => {
-    const commentsUrl = `https://striveschool-api.herokuapp.com/api/comments/${this.props.asin}`
+    const commentsUrl = `https://striveschool-api.herokuapp.com/api/comments/`
+    console.log("post", commentsUrl)
 
     fetch(commentsUrl, {
       method: "POST",

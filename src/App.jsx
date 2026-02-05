@@ -35,11 +35,20 @@ class App extends Component {
   render() {
     return (
       <>
-        <Container bg="dark" data-bs-theme="dark" fluid className="p-0">
+        <Container
+          bg="dark"
+          data-bs-theme="dark"
+          fluid
+          className="p-0"
+        >
           <MyNav />
-          <Welcome />
+          {/*          <Welcome /> */}
           <Container>
-            <CategoryButtons categories={categories} activeData={this.state.selectedBooks} onCategoryChange={this.handleCategoryChange} />
+            <CategoryButtons
+              categories={categories}
+              activeData={this.state.selectedBooks}
+              onCategoryChange={this.handleCategoryChange}
+            />
 
             <BooksList books={this.state.selectedBooks} />
           </Container>

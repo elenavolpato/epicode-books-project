@@ -13,15 +13,18 @@ class BookList extends Component {
   }
 
   handleBookSelect = (bookId) => {
-    console.log("Book clicked, ID:", bookId)
-    console.log("Current selectedBookId:", this.state.selectedBookId)
     this.setState({ selectedBookId: bookId })
   }
   render() {
     const { books } = this.props
     const { searchVal, selectedBookId } = this.state
 
-    const filteredBooks = searchVal === "" ? books : books.filter((book) => book.title.toLowerCase().includes(searchVal.toLowerCase()))
+    const filteredBooks =
+      searchVal === ""
+        ? books
+        : books.filter((book) =>
+            book.title.toLowerCase().includes(searchVal.toLowerCase()),
+          )
 
     return (
       <Row className="justify-content-center mt-3 pb-5">
@@ -34,7 +37,11 @@ class BookList extends Component {
             value={this.state.searchVal}
             onChange={this.handleSearchChange}
           />
-          <Button variant="outline-secondary" id="button-addon2" onChange={this.handleSearchClick}>
+          <Button
+            variant="outline-secondary"
+            id="button-addon2"
+            onChange={this.handleSearchClick}
+          >
             Search
           </Button>
         </InputGroup>
@@ -43,7 +50,14 @@ class BookList extends Component {
         {filteredBooks.length === 0 ? (
           <div> No titles found. Try another search</div>
         ) : (
-          filteredBooks.map((book) => <SingleBook key={book.asin} {...book} selected={selectedBookId === book.asin} onSelect={this.handleBookSelect} />)
+          filteredBooks.map((book) => (
+            <SingleBook
+              key={book.asin}
+              {...book}
+              selected={selectedBookId === book.asin}
+              onSelect={this.handleBookSelect}
+            />
+          ))
         )}
       </Row>
     )

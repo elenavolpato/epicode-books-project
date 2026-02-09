@@ -1,19 +1,19 @@
 import { Component } from "react"
 import { Col, Card, Button, Tooltip, OverlayTrigger } from "react-bootstrap"
-import CommentArea from "./CommentArea"
-import AddCommentModal from "./AddCommentModal"
+/* import CommentArea from "./CommentArea" */
+import AddCommentModal from "./AddComment"
 
 class SingleBook extends Component {
   handleClick = () => {
     this.props.onSelect(this.props.asin)
   }
   // add comments modal logic
-  state = {
+  /*   state = {
     showModal: false,
   }
 
   handleShow = () => this.setState({ showModal: true })
-  handleClose = () => this.setState({ showModal: false })
+  handleClose = () => this.setState({ showModal: false }) */
 
   render() {
     const { asin, title, img, price, category, selected } = this.props
@@ -21,25 +21,19 @@ class SingleBook extends Component {
       <Col
         className="text-center mb-4"
         xs={6}
-        xl={3}
+        xl={6}
       >
         <Card
           onClick={this.handleClick}
           style={{ height: "650px" }}
           className={`shadow book-item ${selected ? "border-danger border-5" : ""}`}
         >
-          {!this.props.selected && (
-            <Card.Img
-              variant="top"
-              src={img}
-              className="book-img "
-            />
-          )}
-          {this.props.selected && (
-            <div className="p-2">
-              <CommentArea elementId={asin} />
-            </div>
-          )}
+          <Card.Img
+            variant="top"
+            src={img}
+            className="book-img "
+          />
+
           <Card.Body className="d-inline-flex flex-column justify-content-end align-items-center">
             <OverlayTrigger overlay={<Tooltip id={asin}>{title}</Tooltip>}>
               <Card.Title>
@@ -56,22 +50,22 @@ class SingleBook extends Component {
                 Buy
               </Button>
 
-              <Button
+              {/* <Button
                 variant="info"
                 className=" fw-bolder"
                 onClick={this.handleShow}
               >
                 Add comment
-              </Button>
+              </Button> */}
             </div>
-            {this.state.showModal && (
+            {/*   {this.state.showModal && (
               <AddCommentModal
                 show={this.state.showModal}
                 handleClose={this.handleClose}
                 asin={asin}
                 title={title}
               />
-            )}
+            )} */}
           </Card.Body>
         </Card>
       </Col>

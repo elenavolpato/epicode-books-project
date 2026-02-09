@@ -1,8 +1,9 @@
 import { Component } from "react"
 import { ListGroup } from "react-bootstrap"
 import Loading from "./Loading"
-import Error from "./Error"
+import ErrorAlert from "./ErrorAlert"
 import CommentList from "./CommentList"
+import AddComment from "./AddComment"
 
 const commentsUrl = "https://striveschool-api.herokuapp.com/api/comments/"
 
@@ -36,13 +37,18 @@ class CommentArea extends Component {
   componentDidMount() {
     this.getComments()
   }
+  componentDidUpdate(prevProps /* , prevState */) {
+    if (prevProps.elementId !== this.props.elementId) {
+      this.getComments()
+    }
+  }
 
   render() {
     return (
       <div>
         <div className="d-flex justify-content-center align-items-center">
           {this.state.loading && <Loading />}
-          {this.state.error && <Error />}
+          {this.state.error && <ErrorAlert />}
         </div>
         <ListGroup>
           {this.state.comments.length === 0 &&
@@ -54,9 +60,15 @@ class CommentArea extends Component {
               <CommentList
                 key={comment._id}
                 comment={comment}
+                onCommentDeleted={this.getComments}
               />
             ))}
         </ListGroup>
+
+        <AddComment
+          selectedBookId={this.props.elementId}
+          onCommentAdded={this.getComments}
+        />
       </div>
     )
   }

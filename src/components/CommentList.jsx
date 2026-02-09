@@ -35,7 +35,8 @@ class CommentList extends Component {
       .then((res) => {
         if (res.ok) {
           console.log("Comment deleted successfully")
-          this.getComments()
+
+          this.props.onCommentDeleted()
         } else {
           throw new Error("Error deleting comment")
         }

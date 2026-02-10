@@ -1,25 +1,23 @@
-import { Component } from "react"
+import { useState } from "react"
 import { Button, Form } from "react-bootstrap"
 
-class AddComment extends Component {
-  state = {
-    comment: "",
-    rate: "1",
-  }
+const AddComment = (props) => {
+  const [comment, setComment] = useState([])
+  const [rate, setRate] = useState("1")
 
-  handleSubmit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault()
-    console.log(this.props.selectedBookId)
+
     const newComment = {
-      comment: this.state.comment,
-      rate: this.state.rate,
-      elementId: this.props.selectedBookId,
+      comment: comment,
+      rate: rate,
+      elementId: props.selectedBookId,
     }
 
-    this.addComment(newComment)
+    addComment(newComment)
   }
 
-  addComment = (newComment) => {
+  const addComment = (newComment) => {
     const commentsUrl = `https://striveschool-api.herokuapp.com/api/comments/`
 
     fetch(commentsUrl, {
@@ -38,52 +36,51 @@ class AddComment extends Component {
       .then((addedComment) => {
         console.log("added", addedComment)
         // updates page with new comments
-        this.props.onCommentAdded()
+        props.onCommentAdded()
         // clears form
-        this.setState({ comment: "", rate: "1" })
+        setComment("")
+        setRate("1")
       })
       .catch((err) => console.error("error in posting comment", err))
   }
 
-  render() {
-    return (
-      <div className="add-comment-section mt-3">
-        <h3>Add comment</h3>
-        <p>{this.props.title}</p>
-        <Form onSubmit={this.handleSubmit}>
-          <Form.Group className="mb-3">
-            <Form.Label>Rating</Form.Label>
-            <Form.Select
-              value={this.state.rate}
-              onChange={(e) => this.setState({ rate: e.target.value })}
-            >
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-            </Form.Select>
-          </Form.Group>
-          <Form.Group className="mb-3">
-            <Form.Label>Comment</Form.Label>
-            <Form.Control
-              as="textarea"
-              rows={3}
-              value={this.state.comment}
-              onChange={(e) => this.setState({ comment: e.target.value })}
-              required
-            />
-          </Form.Group>
-          <Button
-            variant="warning"
-            type="submit"
+  return (
+    <div className="add-comment-section mt-3">
+      <h3>Add comment</h3>
+      <p>{props.title}</p>
+      <Form onSubmit={handleSubmit}>
+        <Form.Group className="mb-3">
+          <Form.Label>Rating</Form.Label>
+          <Form.Select
+            value={rate}
+            onChange={(e) => setRate(e.target.value)}
           >
-            Submit Comment
-          </Button>
-        </Form>
-      </div>
-    )
-  }
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+          </Form.Select>
+        </Form.Group>
+        <Form.Group className="mb-3">
+          <Form.Label>Comment</Form.Label>
+          <Form.Control
+            as="textarea"
+            rows={3}
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
+            required
+          />
+        </Form.Group>
+        <Button
+          variant="warning"
+          type="submit"
+        >
+          Submit Comment
+        </Button>
+      </Form>
+    </div>
+  )
 }
 
 export default AddComment

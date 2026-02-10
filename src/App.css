@@ -7,10 +7,6 @@ body {
   object-fit: cover;
 }
 
-.welcome-alert {
-  left: 40% !important;
-}
-
 .book-item:hover {
   transform: scale(1.03);
   transition: ease-in-out 300ms;

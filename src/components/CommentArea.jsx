@@ -1,4 +1,4 @@
-import { Component } from "react"
+import { useEffect, useState } from "react"
 import { ListGroup } from "react-bootstrap"
 import Loading from "./Loading"
 import ErrorAlert from "./ErrorAlert"
@@ -6,20 +6,18 @@ import CommentList from "./CommentList"
 import AddComment from "./AddComment"
 
 const commentsUrl = "https://striveschool-api.herokuapp.com/api/comments/"
+const auth =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2OTg0OWQyODgwMjA2ODAwMTUwNGRjNjUiLCJpYXQiOjE3NzAyOTg2NjQsImV4cCI6MTc3MTUwODI2NH0._VJ73MJmEcZbxtQjMlmXRAA1xlBhu1QspZwENOPPpko"
 
-class CommentArea extends Component {
-  state = {
-    comments: [],
-    elementId: this.props.elementId,
-    loading: true,
-    error: false,
-  }
+const CommentArea = function (props) {
+  const [comments, setComments] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(false)
 
-  getComments = () => {
-    fetch(commentsUrl + this.props.elementId, {
+  const getComments = () => {
+    fetch(commentsUrl + props.elementId, {
       headers: {
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2OTg0OWQyODgwMjA2ODAwMTUwNGRjNjUiLCJpYXQiOjE3NzAyOTg2NjQsImV4cCI6MTc3MTUwODI2NH0._VJ73MJmEcZbxtQjMlmXRAA1xlBhu1QspZwENOPPpko",
+        Authorization: "Bearer " + auth,
       },
     })
       .then((res) => {
@@ -27,51 +25,47 @@ class CommentArea extends Component {
         else throw new Error("Error in retrieving the comments")
       })
       .then((bookComments) => {
-        this.setState({ comments: bookComments, loading: false })
+        setComments(bookComments)
+        setLoading(false)
       })
       .catch((err) => {
         console.error(err)
-        this.setState({ error: true, loading: false })
+        setLoading(false)
+        setError(true)
       })
   }
-  componentDidMount() {
-    this.getComments()
-  }
-  componentDidUpdate(prevProps /* , prevState */) {
-    if (prevProps.elementId !== this.props.elementId) {
-      this.getComments()
-    }
-  }
 
-  render() {
-    return (
-      <div>
-        <div className="d-flex justify-content-center align-items-center">
-          {this.state.loading && <Loading />}
-          {this.state.error && <ErrorAlert />}
-        </div>
-        <ListGroup>
-          {this.state.comments.length === 0 &&
-            !this.state.loading &&
-            !this.state.error && <div>No comments yet</div>}
-          {this.state.comments.length > 0 &&
-            !this.state.loading &&
-            this.state.comments.map((comment) => (
-              <CommentList
-                key={comment._id}
-                comment={comment}
-                onCommentDeleted={this.getComments}
-              />
-            ))}
-        </ListGroup>
+  useEffect(() => {
+    getComments()
+  }, [props.elementId])
 
-        <AddComment
-          selectedBookId={this.props.elementId}
-          onCommentAdded={this.getComments}
-        />
+  return (
+    <div>
+      <div className="d-flex justify-content-center align-items-center">
+        {loading && <Loading />}
+        {error && <ErrorAlert />}
       </div>
-    )
-  }
+      <ListGroup>
+        {comments.length === 0 && !loading && !error && (
+          <div>No comments yet</div>
+        )}
+        {comments.length > 0 &&
+          !loading &&
+          comments.map((comment) => (
+            <CommentList
+              key={comment._id}
+              comment={comment}
+              onCommentDeleted={getComments}
+            />
+          ))}
+      </ListGroup>
+
+      <AddComment
+        selectedBookId={props.elementId}
+        onCommentAdded={getComments}
+      />
+    </div>
+  )
 }
 
 export default CommentArea

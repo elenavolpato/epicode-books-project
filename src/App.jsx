@@ -42,8 +42,9 @@ class App extends Component {
           className="p-0"
         >
           <MyNav />
-          {/*          <Welcome /> */}
+
           <Container>
+            <Welcome />
             <CategoryButtons
               categories={categories}
               activeData={this.state.selectedBooks}
